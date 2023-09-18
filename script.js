@@ -58,8 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
 function displayChannelHeader(channelName) {
     const containerDiv = document.createElement("div");
     containerDiv.id = "container";
-    containerDiv.style.position = "fixed";  // Set to fixed position
-    containerDiv.style.top = "0px";
+    containerDiv.style.position = "absolute";  // Set to absolute position
+    containerDiv.style.top = "0";
     containerDiv.style.left = "45%";
     containerDiv.style.transform = "translateX(-50%)";
     containerDiv.style.zIndex = "9999";
