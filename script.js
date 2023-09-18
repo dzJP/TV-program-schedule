@@ -56,26 +56,26 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function displayChannelHeader(channelName) {
-  const containerDiv = document.createElement("div");
-  containerDiv.id = "container";
-  containerDiv.style.position = "fixed";
-  containerDiv.style.top = "0px";
-
-  containerDiv.style.left = "45%";
-  containerDiv.style.transform = "translateX(-50%)";
-  containerDiv.style.zIndex = "9999";
-  containerDiv.style.fontSize = "35px";
-  document.body.insertBefore(containerDiv, document.body.firstChild);
-
-  const channelHeaderDiv = document.createElement("div");
-  channelHeaderDiv.id = "channel-header";
-  channelHeaderDiv.style.textAlign = "center";
-  channelHeaderDiv.style.fontSize = "50px"; // font size
-  channelHeaderDiv.textContent = channelName;
-  containerDiv.appendChild(channelHeaderDiv);
-
-  isChannelHeaderDisplayed = true;
-}
+    const containerDiv = document.createElement("div");
+    containerDiv.id = "container";
+    containerDiv.style.position = "fixed";  // Set to fixed position
+    containerDiv.style.top = "0px";
+    containerDiv.style.left = "45%";
+    containerDiv.style.transform = "translateX(-50%)";
+    containerDiv.style.zIndex = "9999";
+    containerDiv.style.fontSize = "35px";
+    document.body.insertBefore(containerDiv, document.body.firstChild);
+  
+    const channelHeaderDiv = document.createElement("div");
+    channelHeaderDiv.id = "channel-header";
+    channelHeaderDiv.style.textAlign = "center";
+    channelHeaderDiv.style.fontSize = "50px"; // font size
+    channelHeaderDiv.textContent = channelName;
+    containerDiv.appendChild(channelHeaderDiv);
+  
+    isChannelHeaderDisplayed = true;
+  }
+  
 
 // Call displayChannelHeader function initially with a default channel name
 displayChannelHeader("SVT 1"); // Default channel name
@@ -102,84 +102,86 @@ function setChannel(channelName) {
 }
 
 function loadData() {
-  fetch(myAPIurl)
+    fetch(myAPIurl)
       .then(response => {
-          if (!response.ok) {
-              throw new Error("Fail");
-          }
-          return response.json();
+        if (!response.ok) {
+          throw new Error("Fail");
+        }
+        return response.json();
       })
       .then(data => {
-          myAPIdata = data;
-
-          const titleElement = document.getElementById("js-title");
-          const scheduleElement = document.getElementById("js-schedule");
-
-          const container = document.querySelector(".col-sm-6");
-
-          // Clear the existing content in the container
-          while (container.firstChild) {
-              container.removeChild(container.firstChild);
+        myAPIdata = data;
+  
+        const titleElement = document.getElementById("js-title");
+        const scheduleElement = document.getElementById("js-schedule");
+  
+        const container = document.querySelector(".col-sm-6");
+  
+        // Clear the existing content in the container
+        while (container.firstChild) {
+          container.removeChild(container.firstChild);
+        }
+  
+        const now = new Date();
+        const currentTime = now.getHours() * 60 + now.getMinutes();
+  
+        // Sort myAPIdata by schedule start time in Ascending order
+        myAPIdata.sort((a, b) => {
+            return new Date(a.start) - new Date(b.start);
+        });
+  
+        myAPIdata.forEach(item => {
+          const div = document.createElement("div");
+          div.classList.add("test");
+          div.style.padding = "1px"; // Add padding of 5 pixels
+          div.style.margin = "2px";
+          div.style.border = "1px solid black"; // Add black border
+          div.style.backgroundColor = "white";
+          div.style.fontSize = "25px";
+  
+          const clonedTitle = titleElement.cloneNode(true);
+          const clonedSchedule = scheduleElement.cloneNode(true);
+  
+          // Change the font size of the title
+          clonedTitle.style.fontSize = "25px";
+  
+          // Align title and time to the left
+          clonedTitle.style.textAlign = "left";
+          clonedSchedule.style.textAlign = "left";
+  
+          // Align title with time
+          clonedTitle.style.verticalAlign = "top";
+          clonedTitle.style.marginBottom = "0"; // Remove bottom margin
+  
+          // Extract hours from item.start and display only hours
+          const startTime = new Date(item.start);
+          const hours = startTime.getHours();
+          const minutes = startTime.getMinutes();
+          const formattedTime =
+            hours.toString().padStart(2, "0") +
+            ":" +
+            minutes.toString().padStart(2, "0");
+  
+          if (hours * 60 + minutes >= currentTime) {
+            clonedSchedule.textContent = formattedTime;
+            clonedTitle.textContent = item.name;
+  
+            div.appendChild(clonedSchedule);
+            div.appendChild(clonedTitle);
+  
+            container.appendChild(div);
           }
-
-          // Sort myAPIdata by schedule start time
-          myAPIdata.sort((a, b) => {
-              return new Date(a.start) - new Date(b.start);
-          });
-
-          myAPIdata.forEach(item => {
-              const div = document.createElement("div");
-              div.classList.add("test");
-              div.style.padding = "1px"; // Add padding of 5 pixels
-              div.style.margin = "2px";
-              div.style.border = "1px solid black"; // Add black border
-              div.style.backgroundColor = "white";
-              div.style.fontSize = "25px";
-              
-
-              const clonedTitle = titleElement.cloneNode(true);
-              const clonedSchedule = scheduleElement.cloneNode(true);
-
-              // Change the font size of the title
-              clonedTitle.style.fontSize = "25px";
-
-              // Align title and time to the left
-              clonedTitle.style.textAlign = "left";
-              clonedSchedule.style.textAlign = "left";
-
-              // Align title with time
-              clonedTitle.style.verticalAlign = "top";
-              clonedTitle.style.marginBottom = "0"; // Remove bottom margin
-
-
-
-              // Extract hours from item.start and display only hours
-              const startTime = new Date(item.start);
-              const hours = startTime.getHours();
-              const minutes = startTime.getMinutes();
-              const formattedTime =
-                  hours.toString().padStart(2, "0") +
-                  ":" +
-                  minutes.toString().padStart(2, "0");
-
-              clonedSchedule.textContent = formattedTime;
-
-              clonedTitle.textContent = item.name;
-
-              div.appendChild(clonedSchedule);
-              div.appendChild(clonedTitle);
-
-              container.appendChild(div);
-          });
-
-          myAPIdata.splice(0, 99, length);
-          console.log(myAPIdata.length);
-          addMargin();
+        });
+  
+        myAPIdata.splice(0, 99, length);
+        console.log(myAPIdata.length);
+        addMargin();
       })
       .catch(error => {
-          console.error("Error: " + error.message);
+        console.error("Error: " + error.message);
       });
-}
+  }
+
 loadData();
 function addMargin() {
     const elements = document.getElementsByClassName("col-sm-6 offset-sm-2");
