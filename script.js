@@ -56,12 +56,34 @@ function displayChannelHeader(channelName) {
     const containerDiv = document.createElement("div");
     containerDiv.id = "container";
     containerDiv.style.position = "absolute";
-    containerDiv.style.top = "0";
+    containerDiv.style.top = "-12";
     containerDiv.style.left = "45%";
     containerDiv.style.transform = "translateX(-50%)";
     containerDiv.style.zIndex = "9999";
     containerDiv.style.fontSize = "35px";
     document.body.insertBefore(containerDiv, document.body.firstChild);
+
+    const buttonContainer = document.createElement('div');
+    buttonContainer.classList.add('button-container');
+    buttonContainer.style.position = 'absolute';
+    buttonContainer.style.top = '100px'; // Adjust as needed
+    buttonContainer.style.left = '50%';
+    buttonContainer.style.transform = 'translateX(-50%)';
+    buttonContainer.style.zIndex = '9999';
+
+    const showAllTitlesButton = document.createElement('button');
+    showAllTitlesButton.textContent = 'Visa tidigare program';
+    showAllTitlesButton.classList.add('show-previous-button');
+    showAllTitlesButton.style.fontSize = '18px';
+    showAllTitlesButton.style.width = '632px'; // Set width to 630 pixels
+    showAllTitlesButton.style.marginTop = '-40px'; // Move up by 20 pixels
+    showAllTitlesButton.style.marginLeft = '-28px';
+  
+    buttonContainer.appendChild(showAllTitlesButton);
+
+    containerDiv.appendChild(buttonContainer);
+
+    showAllTitlesButton.addEventListener('click', showAllTitles);
 
     const channelHeaderDiv = document.createElement("div");
     channelHeaderDiv.id = "channel-header";
@@ -71,14 +93,6 @@ function displayChannelHeader(channelName) {
     containerDiv.appendChild(channelHeaderDiv);
 
     isChannelHeaderDisplayed = true;
-
-    const showAllTitlesButton = document.createElement('button');
-    showAllTitlesButton.textContent = 'Visa tidigare program';
-    showAllTitlesButton.classList.add('show-previous-button');
-    showAllTitlesButton.style.fontSize = '18px';
-    containerDiv.appendChild(showAllTitlesButton);
-
-    showAllTitlesButton.addEventListener('click', showAllTitles);
 }
 
 displayChannelHeader("SVT 1");
