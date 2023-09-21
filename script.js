@@ -117,7 +117,7 @@ function displayChannelHeader(channelName) {
     showAllTitlesButton.style.fontSize = '18px';
     showAllTitlesButton.style.width = '632px';
     showAllTitlesButton.style.marginTop = '-40px';
-    showAllTitlesButton.style.marginLeft = '-28px';
+    showAllTitlesButton.style.marginLeft = '-8px';
 
     buttonContainer.appendChild(showAllTitlesButton);
 
